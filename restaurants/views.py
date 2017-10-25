@@ -3,12 +3,14 @@ import random
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
+from .models import RestaurantLocation
 
 # Create your views here.
 # function based view
 
 #Old can del
+'''
 """
 def home(request):
     num = None
@@ -65,12 +67,34 @@ class HomeView(TemplateView):
 
         return context
 
-
+# Now inside URL in one line
+"""
 class AboutView(TemplateView):
     template_name = "about.html"
 
 
 class ContactTemplateView(TemplateView):
     template_name = "contact.html"
+"""
+'''
 
+def restaurant_listview(request):
+    template_name = 'restaurants/restaurants_list.html'
+    queryset = RestaurantLocation.objects.all()
+    context = {
+        "object_list": queryset
+    }
+    return render(request, template_name, context)
+
+class RestaurantListView(ListView):
+    queryset = RestaurantLocation.objects.all()
+    template_name = 'restaurants/restaurants_list.html'
+
+class MexicanRestaurantListView(ListView):
+    queryset = RestaurantLocation.objects.filter(category__iexact='mexican')
+    template_name = 'restaurants/restaurants_list.html'
+
+class AsianFusionRestaurantListView(ListView):
+    queryset = RestaurantLocation.objects.filter(category__iexact='asian fusion')
+    template_name = 'restaurants/restaurants_list.html'
 
