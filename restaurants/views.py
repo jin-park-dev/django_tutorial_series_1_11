@@ -87,18 +87,21 @@ def restaurant_createview(request):
     #     print('get data')
     #     print(request.GET)
     if request.method == 'POST':
-        print("post data")
-        print(request.POST)
-        title = request.POST.get("title")
-        location = request.POST.get("location")
-        category = request.POST.get("category")
-        obj = RestaurantLocation.objects.create(
-            name = title,
-            location = location,
-            category = category
-        )
-        return HttpResponseRedirect("/restaurants/")
-
+        # print("post data")
+        # print(request.POST)
+        # title = request.POST.get("title")
+        # location = request.POST.get("location")
+        # category = request.POST.get("category")
+        form = ResaurantCreateForm(request.POST)
+        if form.is_valid():
+            obj = RestaurantLocation.objects.create(
+                name = form.cleaned_data.get('name'),
+                location = form.cleaned_data.get('location'),
+                category = form.cleaned_data.get('category')
+            )
+            return HttpResponseRedirect("/restaurants/")
+        if form.errors:
+            print(form.errors)
     template_name = 'restaurants/form.html'
     context = {}
     return render(request, template_name, context)
@@ -116,6 +119,7 @@ def restaurant_listview(request):
 class RestaurantListView(ListView):
     def get_queryset(self):
         slug = self.kwargs.get("slug")
+        print('Rest_list_view slug: '.format(slug))
         if slug:
             queryset = RestaurantLocation.objects.filter(
                 Q(category__iexact=slug) |
@@ -125,13 +129,13 @@ class RestaurantListView(ListView):
             queryset = RestaurantLocation.objects.all()
         return queryset
 
-    def get_context_data(self, *args, **kwargs):
-        print(self.kwargs)
-        context = super(RestaurantListView, self).get_context_data(*args, **kwargs)
-        print()
-        print('context')
-        print(context)
-        return context
+    # def get_context_data(self, *args, **kwargs):
+    #     print(self.kwargs)
+    #     context = super(RestaurantListView, self).get_context_data(*args, **kwargs)
+    #     print()
+    #     print('context')
+    #     print(context)
+    #     return context
 
 class RestaurantDetailView(DetailView):
     queryset = RestaurantLocation.objects.all() # Can filter by user
