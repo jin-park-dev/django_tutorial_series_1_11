@@ -1,11 +1,13 @@
 import random
 
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
+
 from .models import RestaurantLocation
+from .forms import ResaurantCreateForm
 
 # Create your views here.
 # function based view
@@ -79,6 +81,29 @@ class ContactTemplateView(TemplateView):
 """
 '''
 
+
+def restaurant_createview(request):
+    # if request.method == 'GET':
+    #     print('get data')
+    #     print(request.GET)
+    if request.method == 'POST':
+        print("post data")
+        print(request.POST)
+        title = request.POST.get("title")
+        location = request.POST.get("location")
+        category = request.POST.get("category")
+        obj = RestaurantLocation.objects.create(
+            name = title,
+            location = location,
+            category = category
+        )
+        return HttpResponseRedirect("/restaurants/")
+
+    template_name = 'restaurants/form.html'
+    context = {}
+    return render(request, template_name, context)
+
+
 def restaurant_listview(request):
     template_name = 'restaurants/restaurants_list.html'
     queryset = RestaurantLocation.objects.all()
@@ -100,14 +125,16 @@ class RestaurantListView(ListView):
             queryset = RestaurantLocation.objects.all()
         return queryset
 
-    # def get_context_data(self, *args, **kwargs):
-    #     print(self.kwargs)
-    #     context = super(RestaurantListView, self).get_context_data(*args, **kwargs)
-    #     print(context)
-    #     return context
+    def get_context_data(self, *args, **kwargs):
+        print(self.kwargs)
+        context = super(RestaurantListView, self).get_context_data(*args, **kwargs)
+        print()
+        print('context')
+        print(context)
+        return context
 
 class RestaurantDetailView(DetailView):
-    queryset = RestaurantLocation.objects.all()
+    queryset = RestaurantLocation.objects.all() # Can filter by user
 
     # def get_object(self, *args, **kwargs):
     #     rest_id = self.kwargs.get('rest_id')
