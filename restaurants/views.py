@@ -4,93 +4,22 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
 from .models import RestaurantLocation
-from .forms import ResaurantCreateForm
+from .forms import ResaurantCreateForm, RestaurantLocationCreateForm
 
 # Create your views here.
 # function based view
 
-#Old can del
-'''
-"""
-def home(request):
-    num = None
-    some_list = [random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)]
-    condition_bool_item = False
-    if condition_bool_item:
-        num = random.randint(0, 1000)
-    context = {
-        "html_var": "**context var**",
-        "num": num,
-        "bool_item": True,
-        "some_list": some_list
-    }
-    return render(request, "home.html", context)
-
-
-def about(request):
-    context = {
-    }
-    return render(request, "about.html", context)
-
-
-def contact(request):
-    context = {
-    }
-    return render(request, "contact.html", context)
-
-
-class ContactView(View):
-    def get(self, request, *args, **kwargs):
-        context = {}
-        return render(request, "contact.html", context)
-"""
-
-
-class HomeView(TemplateView):
-    template_name = "home.html"
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(HomeView, self).get_context_data(*args, **kwargs)
-        print(context)
-
-        num = None
-        some_list = [random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)]
-        condition_bool_item = False
-        if condition_bool_item:
-            num = random.randint(0, 1000)
-        context = {
-            "html_var": "**context var**",
-            "num": num,
-            "bool_item": True,
-            "some_list": some_list
-        }
-
-        return context
-
-# Now inside URL in one line
-"""
-class AboutView(TemplateView):
-    template_name = "about.html"
-
-
-class ContactTemplateView(TemplateView):
-    template_name = "contact.html"
-"""
-'''
-
-
 def restaurant_createview(request):
-    form = ResaurantCreateForm(request.POST or None)
+    form = RestaurantLocationCreateForm(request.POST or None)
     errors = None
     if form.is_valid():
-        obj = RestaurantLocation.objects.create(
-            name = form.cleaned_data.get('name'),
-            location = form.cleaned_data.get('location'),
-            category = form.cleaned_data.get('category')
-        )
+        # Customize here
+        # like a pre_save
+        form.save()
+        # like a post save
         return HttpResponseRedirect("/restaurants/")
     if form.errors:
         errors = form.errors
@@ -122,18 +51,13 @@ class RestaurantListView(ListView):
             queryset = RestaurantLocation.objects.all()
         return queryset
 
-    # def get_context_data(self, *args, **kwargs):
-    #     print(self.kwargs)
-    #     context = super(RestaurantListView, self).get_context_data(*args, **kwargs)
-    #     print()
-    #     print('context')
-    #     print(context)
-    #     return context
 
 class RestaurantDetailView(DetailView):
     queryset = RestaurantLocation.objects.all() # Can filter by user
 
-    # def get_object(self, *args, **kwargs):
-    #     rest_id = self.kwargs.get('rest_id')
-    #     obj = get_object_or_404(RestaurantLocation, id=rest_id) # pk = rest_id is also same.
-    #     return obj
+
+# This works with forms.ModelForm to auto do saving aspect
+class RestaurantCreateView(CreateView):
+    form_class = RestaurantLocationCreateForm
+    template_name = 'restaurants/form.html'
+    success_url = "/restaurants/"
