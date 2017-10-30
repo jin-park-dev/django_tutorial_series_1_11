@@ -8,9 +8,16 @@
 
     <ul></ul>
     {% for obj in object_list %}
-        <li><a href="/restaurants/{{ obj.slug }}/"> {{ obj}} </a></li>
-        <small>{{ obj.name }} {{ obj.location }} {{ obj.category }} {{ obj.timestamp }} {{ obj.updated }}</small>
+        <li>
+            <a href="{{ obj.get_absolute_url }}"> {{ obj }} </a><br/>
+            <small>{{ obj.name }} {{ obj.location }} {{ obj.category }} {{ obj.timestamp }} {{ obj.updated }}</small> </li>
 
     {% endfor %}
 
 {% endblock %}
+
+{# Other ways of getting URL #}
+
+{#<a href="{% url 'restaurant-detail' slug=obj.slug %}"> {{ obj }} </a><br/>#}
+{#<a href="{{ obj.get_absolute_url }}"> {{ obj }} </a><br/>#}
+{#<a href="/restaurants/{{ obj.slug }}/"> {{ obj }} </a><br/>#}
