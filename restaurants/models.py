@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 
@@ -5,14 +6,16 @@ from .utils import unique_slug_generator
 from .validators import validate_categories
 # Create your models here.
 
+User = settings.AUTH_USER_MODEL
+
 class RestaurantLocation(models.Model):
+    owner           = models.ForeignKey(User)
     name            = models.CharField(max_length=120)
     location        = models.CharField(max_length=120, null=True, blank=True)
     category        = models.CharField(max_length=120, null=True, blank=True, validators=[validate_categories])
     #Auto saved in db so can't change in admin now.
     timestamp       = models.DateTimeField(auto_now_add=True) # When first added
     updated         = models.DateTimeField(auto_now=True) # Last updated
-    # my_date_field   = models.DateField(auto_now=False, auto_now_add=False)
     slug            = models.SlugField(blank=True, null=True)
 
     def __str__(self):

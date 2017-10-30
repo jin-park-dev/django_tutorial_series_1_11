@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import RestaurantLocation
-from .validators import validate_categories, clean_email
+from .validators import validate_categories
 
 class ResaurantCreateForm(forms.Form):
     name            = forms.CharField()
@@ -19,8 +19,6 @@ class ResaurantCreateForm(forms.Form):
 
 # This works with CreativeView to auto do saving aspect
 class RestaurantLocationCreateForm(forms.ModelForm):
-    # email = forms.EmailField(validators=[clean_email])
-    # category = forms.CharField(required=False, validators=[validate_categories])
     class Meta:
         model = RestaurantLocation
         fields = [
@@ -34,9 +32,3 @@ class RestaurantLocationCreateForm(forms.ModelForm):
         if name == "Hello":
             raise forms.ValidationError("Not a valid name. Error rasied customlyfor 'Hello'")
         return name
-
-    # def clean_email(self):
-    #     email = self.cleaned_data.get("email")
-    #     if "edu" in email:
-    #         raise forms.ValidationError("We do not accept EDU emails")
-    #     return email

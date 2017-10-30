@@ -7,13 +7,6 @@ def validate_even(value):
             params={'value': value},
         )
 
-
-def clean_email(value):
-    email = value
-    if ".edu" in email:
-        raise ValidationError("We do not accept EDU emails")
-
-
 CATEGORIES = ['Mexican', 'Asian', 'American', 'Whatever']
 
 def validate_categories(value):
