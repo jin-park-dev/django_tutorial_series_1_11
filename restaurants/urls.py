@@ -3,10 +3,8 @@ from django.conf.urls import url
 
 
 from .views import (
-    # restaurant_listview,
     RestaurantListView,
     RestaurantDetailView,
-    # restaurant_createview,
     RestaurantCreateView
 )
 
