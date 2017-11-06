@@ -15,6 +15,7 @@ urlpatterns = [
 
     url(r'^$', TemplateView.as_view(template_name='home.html'), name='home'),
     url(r'^restaurants/', include('restaurants.urls', namespace='restaurants')),
+    url(r'^u/', include('profiles.urls', namespace='profiles')),
     url(r'^items/', include('menus.urls', namespace='menus')),
 
     url(r'^about/', TemplateView.as_view(template_name='about.html'), name='about'),
