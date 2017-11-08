@@ -5,10 +5,15 @@ from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView
 
 
+from profiles.views import ProfileFollowToogle
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^u/$', ProfileFollowToogle.as_view(), name='follow'),
+
+
     url(r'^password_reset/$', PasswordResetView.as_view(), name='password_reset'),
     url(r'^password_reset_confirm/$', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     url(r'^password_reset_done/$', PasswordResetConfirmView.as_view(), name='password_reset_done'),
