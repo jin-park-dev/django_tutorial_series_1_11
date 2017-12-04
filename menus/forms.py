@@ -21,8 +21,8 @@ class ItemForm(forms.ModelForm):
     #     super(ItemForm, self).__init__(*args, **kwargs)
 
     def __init__(self, user=None, *args, **kwargs):
-        print(user)
-        print(kwargs)
+        # print(user)
+        # print(kwargs)
         super(ItemForm, self).__init__(*args, **kwargs)
         self.fields['restaurant'].queryset = RestaurantLocation.objects.filter(owner=user)
         #.exclude(item__isnull=False) if relationhsip is null. So empty item is not showing

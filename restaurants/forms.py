@@ -3,6 +3,7 @@ from django import forms
 from .models import RestaurantLocation
 from .validators import validate_categories
 
+
 class ResaurantCreateForm(forms.Form):
     name            = forms.CharField()
     location        = forms.CharField(required=False)

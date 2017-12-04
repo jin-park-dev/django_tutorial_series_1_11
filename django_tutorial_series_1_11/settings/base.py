@@ -28,6 +28,28 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+
+
+# Email stuff
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'youremail@gmail.com'
+EMAIL_HOST_PASSWORD = 'yourpassword'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Your name <you@gmail.com>'
+
+ADMINS = (
+    ('jinpa', 'jinpark.han@gmail.com'),
+)
+MANAGERS = ADMINS
+
+
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -125,3 +147,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
+
+LOGOUT_REDIRECT_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
