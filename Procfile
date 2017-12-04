@@ -1,0 +1,1 @@
+web: gunicorn django_tutorial_series_1_11.wsgi
